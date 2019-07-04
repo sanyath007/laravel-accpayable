@@ -63,6 +63,22 @@ return [
             ]) : [],
         ],
 
+        # Our employees database connection
+        'person' => array(
+            'driver'        => 'mysql',
+            'host'          => env('DB_PS_HOST', '127.0.0.1'),
+            'port'          => env('DB_PS_PORT', '3306'),
+            'database'      => env('DB_PS_DATABASE', 'forge'),
+            'username'      => env('DB_PS_USERNAME', 'forge'),
+            'password'      => env('DB_PS_PASSWORD', ''),
+            'unix_socket'   => env('DB_PS_SOCKET', ''),
+            'charset'       => 'utf8',
+            'collation'     => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
+            'engine'        => null,
+        ),
+        
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
