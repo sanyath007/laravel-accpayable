@@ -214,17 +214,35 @@ class AccountController extends Controller
     public function ledgerDebttype($sdate, $edate, $showall)
     {
         $debts = [];
+        $paidOutOfDates = '';
+        $index = 0;
+
+        $objPaidOutOfDates = \DB::select("SELECT payment_id, debt_id FROM nrhosp_acc_payment_detail WHERE (
+                                    payment_id in (
+                                        SELECT payment_id FROM nrhosp_acc_payment
+                                        WHERE (paid_date NOT BETWEEN '$sdate' AND '$edate') 
+                                        AND (paid_stat='Y')
+                                    )
+                                )");
+
+        foreach($objPaidOutOfDates as $p) {
+            if(++$index == count($objPaidOutOfDates)) {
+                $paidOutOfDates .= "'" .$p->debt_id. "'";
+            }
+            else {
+                $paidOutOfDates .= "'" .$p->debt_id. "',";
+            }
+        }
 
         $sql = "SELECT d.debt_type_id, dt.debt_type_name,
-                SUM(debt_total) as debit,
-                SUM(pd.rcpamt) as credit
+                SUM(d.debt_total) as credit,
+                SUM(CASE WHEN (d.debt_id NOT IN ($paidOutOfDates)) THEN pd.rcpamt END) as debit
                 FROM nrhosp_acc_debt d 
                 LEFT JOIN nrhosp_acc_debt_type dt ON (d.debt_type_id=dt.debt_type_id)
-                LEFT JOIN nrhosp_acc_payment_detail pd ON (d.debt_id=pd.debt_id) 
-                WHERE (d.debt_status NOT IN ('3','4')) ";
+                LEFT JOIN nrhosp_acc_payment_detail pd ON (d.debt_id=pd.debt_id) "; //#AND (d.debt_status NOT IN ('3','4'))
 
-        if($showall == '0') {
-            $sql .= "AND (d.debt_date BETWEEN '$sdate' AND '$edate') ";
+        if($showall == '1') {
+            $sql .= "WHERE (d.debt_date BETWEEN '$sdate' AND '$edate') ";
         }
 
         $sql .= "GROUP BY d.debt_type_id, dt.debt_type_name
@@ -232,25 +250,12 @@ class AccountController extends Controller
 
         $debts = \DB::select($sql);
 
-        $objPaidOutOfDates = \DB::select("SELECT a.payment_id 
-                                FROM nrhosp_acc_payment a 
-                                LEFT JOIN nrhosp_acc_payment_detail b ON (a.payment_id=b.payment_id)
-                                WHERE (a.paid_date > '$sdate') 
-                                AND (a.paid_date > '$edate') 
-                                AND (a.paid_stat='Y') ");
-
-        $paidOutOfDates = array_map(function($p) {
-            return [$p->payment_id];
-        }, $objPaidOutOfDates);
-
-        print_r($paidOutOfDates);
-        // return view('accounts.ledger-debttype', [
-        //     "debts"             => $debts,
-        //     "paidOutOfDates"    => $paidOutOfDates,
-        //     "sdate"             => $sdate,
-        //     "edate"             => $edate,
-        //     "showall"           => $showall,
-        // ]);
+        return view('accounts.ledger-debttype', [
+            "debts"             => $debts,
+            "sdate"             => $sdate,
+            "edate"             => $edate,
+            "showall"           => $showall,
+        ]);
     }
 
     public function ledgerDebttypeExcel($sdate, $edate, $showall)

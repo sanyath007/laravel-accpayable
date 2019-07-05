@@ -121,8 +121,8 @@
                                         <td style="text-align: center;">{{ ++$index }}</td>
                                         <td style="text-align: center;">{{ $debt->debt_type_id }}</td>
                                         <td style="text-align: left;">{{ $debt->debt_type_name }}</td>
-                                        <td style="text-align: right;">{{ number_format($debt->debit,2) }}</td>
                                         <td style="text-align: right;">{{ number_format($debt->credit,2) }}</td>
+                                        <td style="text-align: right;">{{ number_format($debt->debit,2) }}</td>
                                         <td style="text-align: right;">
                                             {{ ($debt->credit) ? number_format(($debt->debit - $debt->credit),2) : number_format($debt->debit,2) }}
                                         </td>
