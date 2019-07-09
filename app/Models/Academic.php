@@ -8,7 +8,7 @@ class Academic extends Model
 {
   	protected $connection = 'person';
   	protected $table = 'academic';
-
+  	
   	public function user()
     {
         return $this->hasMany('App\Models\User', 'ac_id', 'ac_id');
