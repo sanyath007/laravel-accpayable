@@ -5,7 +5,7 @@ app.constant('CONFIG', {
     'APP_VERSION' : '1.0.0',
     'GOOGLE_ANALYTICS_ID' : '',
     // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/laravel-accpayable/public', //NB dev env
-    'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/public/laravel-accpayable/public', //เครื่องกบ รพ.
+    'BASE_URL' : window.location.protocol+ '//' +window.location.host, //เครื่องกบ รพ.
     // 'BASE_URL' : window.location.protocol+ '//' +window.location.host+ '/accpayable/public', //เครื่องพี่เจมส์
     'SYSTEM_LANGUAGE' : 'TH'
 });

@@ -69,7 +69,7 @@
     <script src="{{ asset('/js/adminlte.min.js') }}"></script>
 
     <!-- AngularJS Components -->
-    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/js/main.js') }}"></script>
     <script src="{{ asset('/js/controllers/mainCtrl.js') }}"></script>
     <!-- <script src="{{ asset('/js/reserveCtrl.js') }}"></script>
     <script src="{{ asset('/js/assignCtrl.js') }}"></script>
