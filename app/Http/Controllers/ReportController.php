@@ -25,14 +25,14 @@ class ReportController extends Controller
         $page = (isset($req['page'])) ? $req['page'] : 1;
         $offset = ($page * $perpage) - $perpage;
 
-        $sql = "SELECT b.debt_id,b.debt_date,b.deliver_no,c.debt_type_name,b.debt_type_detail,";
-        $sql .= "b.supplier_id,b.supplier_name,b.debt_amount,b.debt_vatrate,b.debt_vat,b.debt_total, ";
-        $sql .= "CASE WHEN (b.debt_status='0') THEN 'ตั้งหนี้' ";
-        $sql .= "WHEN (b.debt_status='1') THEN 'ขออนุมัติ' ";
-        $sql .= "WHEN (b.debt_status='2') THEN 'ตัดจ่าย' END AS debt_status ";
-        $sql .= "FROM nrhosp_acc_debt b ";
-        $sql .= "LEFT JOIN nrhosp_acc_debt_type c ON (b.debt_type_id=c.debt_type_id)";
-        $sql .= "WHERE (b.debt_status IN ('0', '1'))";
+        $sql = "SELECT b.debt_id,b.debt_date,b.deliver_no,c.debt_type_name,b.debt_type_detail,
+                b.supplier_id,b.supplier_name,b.debt_amount,b.debt_vatrate,b.debt_vat,b.debt_total, 
+                CASE WHEN (b.debt_status='0') THEN 'ตั้งหนี้' 
+                WHEN (b.debt_status='1') THEN 'ขออนุมัติ' 
+                WHEN (b.debt_status='2') THEN 'ตัดจ่าย' END AS debt_status 
+                FROM nrhosp_acc_debt b 
+                LEFT JOIN nrhosp_acc_debt_type c ON (b.debt_type_id=c.debt_type_id)
+                WHERE (b.debt_status <> '3') ";
 
         if($creditor != 0) {
             $sql .= "AND (b.supplier_id='$creditor')";

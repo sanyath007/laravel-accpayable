@@ -32,10 +32,11 @@ class AccountController extends Controller
             $debts = \DB::table('nrhosp_acc_debt')
                         ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
                                  'nrhosp_acc_app.app_id')
-                        ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-                        ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
-                        ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                        ->leftJoin('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                        ->leftJoin('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                        ->leftJoin('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
                         ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
+                        ->orderBy('nrhosp_acc_debt.debt_date', 'ASC')
                         ->paginate(20);
 
             $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
@@ -46,13 +47,14 @@ class AccountController extends Controller
                 $debts = \DB::table('nrhosp_acc_debt')
                             ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
                                      'nrhosp_acc_app.app_id')
-                            ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-                            ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
-                            ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                            ->leftJoin('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                            ->leftJoin('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                            ->leftJoin('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
                             ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
                             ->where('nrhosp_acc_debt.debt_type_id', '=', $debttype)
                             ->where('nrhosp_acc_debt.supplier_id', '=', $creditor)
                             ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
+                            ->orderBy('nrhosp_acc_debt.debt_date', 'ASC')
                             ->paginate(20);
 
                 $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
@@ -65,12 +67,13 @@ class AccountController extends Controller
                     $debts = \DB::table('nrhosp_acc_debt')
                                 ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
                                          'nrhosp_acc_app.app_id')
-                                ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-                                ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
-                                ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                ->leftJoin('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                ->leftJoin('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                ->leftJoin('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
                                 ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
                                 ->where('nrhosp_acc_debt.debt_type_id', '=', $debttype)
                                 ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
+                                ->orderBy('nrhosp_acc_debt.debt_date', 'ASC')
                                 ->paginate(20);
 
                     $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
@@ -81,12 +84,13 @@ class AccountController extends Controller
                      $debts = \DB::table('nrhosp_acc_debt')
                                     ->select('nrhosp_acc_debt.*', 'nrhosp_acc_debt_type.debt_type_name', 'nrhosp_acc_app.app_recdoc_date',
                                              'nrhosp_acc_app.app_id')
-                                    ->join('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
-                                    ->join('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
-                                    ->join('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
+                                    ->leftJoin('nrhosp_acc_debt_type', 'nrhosp_acc_debt.debt_type_id', '=', 'nrhosp_acc_debt_type.debt_type_id')
+                                    ->leftJoin('nrhosp_acc_app_detail', 'nrhosp_acc_debt.debt_id', '=', 'nrhosp_acc_app_detail.debt_id')
+                                    ->leftJoin('nrhosp_acc_app', 'nrhosp_acc_app_detail.app_id', '=', 'nrhosp_acc_app.app_id')
                                     ->whereNotIn('nrhosp_acc_debt.debt_status', [2,3,4])
                                     ->where('nrhosp_acc_debt.supplier_id', '=', $creditor)
                                     ->whereBetween('nrhosp_acc_debt.debt_date', [$sdate, $edate])
+                                    ->orderBy('nrhosp_acc_debt.debt_date', 'ASC')
                                     ->paginate(20);
 
                     $totalDebt = Debt::whereNotIn('debt_status', [2,3,4])
